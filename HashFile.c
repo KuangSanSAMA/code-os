@@ -135,6 +135,8 @@ int hashfile_findrec(int fd,int keyoffset,int keylen,void *buf)
     if(tag.free == 0)
     {
         offset += hfh.reclen+sizeof(struct CFTag);
+	    if(offset >= lseek(fd,0,SEEK_END))
+            offset = sizeof(struct HashFileHeader); //reach at and,then rewind
         if(lseek(fd,offset,SEEK_SET)==-1)
             return -1;
         read(fd,&tag,sizeof(struct CFTag));
@@ -174,6 +176,8 @@ int hashfile_findrec(int fd,int keyoffset,int keylen,void *buf)
             free(p);
             p = NULL;
             offset += hfh.reclen+sizeof(struct CFTag);
+	        if(offset >= lseek(fd,0,SEEK_END))
+            	offset = sizeof(struct HashFileHeader); //reach at and,then rewind
             if(lseek(fd,offset,SEEK_SET) == -1)
                 return -1;
             read(fd,&tag,sizeof(struct CFTag));
@@ -227,7 +231,10 @@ int hash(int keyoffset,int keylen,void *buf,int total_rec_num)
     int addr =0;
     for(i=0;i<keylen;i++)
     {
-        addr += (int)(*p);
+        int n = (int)(*p);
+        if(n<0)
+            n=256+n;
+        addr += n;
         p++;
     }
     return addr%(int)(total_rec_num*COLLISIONFACTOR);
