@@ -30,7 +30,7 @@ int main(int argc,char *argv[])
         printf("<%d,%d>\t",rec[j].key,hash(KEYOFFSET,KEYLEN,&rec[j],6));
     }
     //O_RDWR|O_CREAT  open with read and write ,if file not exist create it
-    int fd = hashfile_creat(FileNAME,O_RDWR|O_CREAT,RECORDLEN,6);
+    int fd = hashfile_creat(FileNAME,O_RDWR|O_CREAT|O_TRUNC,RECORDLEN,6);
     int i=0;
 
     
