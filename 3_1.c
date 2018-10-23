@@ -16,7 +16,7 @@ int BF_malloc(struct map *mp,int size){
 	register int a,s;
 	register struct map *bp,*bpp;
 	for(bp=mp;bp->m_size;bp++){
-		if(bp->m_size>size){
+		if(bp->=m_size>size){
 			a = bp->m_addr;
 			s = bp->m_size;
 			for(bpp=bp;bpp->m_size;bpp++){
